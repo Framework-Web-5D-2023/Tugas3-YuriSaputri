@@ -1,17 +1,27 @@
 <?php
+
 namespace App\Controllers;
 
-class Home extends BaseController {
+class Home extends BaseController
+{
+    protected $mahasiswaModel;
 
-    public function index()
+    public function __construct()
     {
-        $data = [
-            'title' => 'Home',
-            'nama' => 'Yuri Saputri',
-        ];
+        $this->mahasiswaModel = new \App\Models\MahasiswaModel();
+    }
 
-        echo view('templates/header', $data);
-        echo view('home', $data);
-        echo view('templates/footer');
+    public function index(): string
+    {
+        $mahasiswa = $this->mahasiswaModel->getAllMahasiswa();
+        $data = [
+            'title' => 'Home Page',
+            'nama' => 'Yuri Saputri',
+            "mahasiswa" => $mahasiswa,
+        ];
+        $header = view('templates/header', $data);
+        $home = view('home', $data);
+        $footer = view('templates/footer', $data);
+        return $header . $home . $footer;
     }
 }
